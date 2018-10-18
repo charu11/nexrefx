@@ -1,0 +1,31 @@
+{
+  "test": "export APP_ENV=development && jest --no-cache --runInBand --forceExit",
+  "name": "serverapp",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "bcrypt": "^2.0.1",
+    "body-parser": "^1.18.3",
+    "cookie-parser": "~1.4.3",
+    "cors": "^2.8.4",
+    "currency-formatter": "^1.4.2",
+    "debug": "^2.6.9",
+    "express": "^4.16.3",
+    "express-fileupload": "^0.3.0",
+    "jade": "~1.11.0",
+    "jsonwebtoken": "^8.2.1",
+    "log4js": "^2.6.1",
+    "mongoose": "^4.13.13",
+    "morgan": "^1.9.1",
+    "node-mailer": "^0.1.1",
+    "node-thumbnail": "^0.14.0",
+    "serve-favicon": "^2.5.0",
+    "stripe": "^5.10.0"
+  },
+  "engines": {
+    "node": "6.9.4"
+  }
+}
