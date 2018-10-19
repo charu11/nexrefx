@@ -22,6 +22,7 @@
     "morgan": "^1.9.1",
     "node-mailer": "^0.1.1",
     "node-thumbnail": "^0.14.0",
+    "nodemon": "^1.18.4",
     "serve-favicon": "^2.5.0",
     "stripe": "^5.10.0"
   },

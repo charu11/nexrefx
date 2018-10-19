@@ -9,14 +9,14 @@ var UserSchema = Schema({
     birthday: { type: String, required: true, unique: false, default:'none'},
     password: { type: String, required: true, unique: false },
     contactNumber: { type: String, required: true, unique: false, default: 'none' },
-    address: [{
+    address: {
       address: { type: String, required: true, unique: false },
       zipcode: { type: String, required: true, unique: false },
       city: { type: String, required: true, unique: false },
       state: { type: String, required: false, unique: false },
       country: { type: String, required: true, unique: false }
-    }],
-    enableUser: { type: Boolean, required: true, unique: false, default: true },
+    },
+    enableUser: { type: Boolean, required: true, unique: false, default: true},
     socialLoginId:{ type: String, required: false, unique: true },
     userPlatform: { type: String, required: true, unique: false, enum:['iOS', 'android', 'web']},
     userType: { type: String, required: true, unique: false, default: 'standard', enum:['standard', 'facebook', 'google'] },

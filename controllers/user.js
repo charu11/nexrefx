@@ -12,6 +12,13 @@ var UserController = require('../controllers/user');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
 var cryptoHandler = ('../controllers/cryptoHandler');
+app.use(cors())
+router.use(cors())
+var http = require('http');
+var url = require('url');
+var fs = require('fs');
+var path = require('path');
+var jsonwebtoken = require('jsonwebtoken');
 //var User = mongoose.model('User');
 
 app.use(cors())
@@ -40,9 +47,9 @@ router.use(function (req, res, next) {
 
 exports.user = function(req, res){
   console.log("###### user ######");
-  res.json({status: 'user'});
-
+  res.json({status: 'user auth success !'});
 };
+
 
 /* ### Signup / Register ### */
 exports.register = function(req, res){
@@ -69,6 +76,11 @@ exports.register = function(req, res){
         user.contactNumber = req.body.ContactNumber;
         //user.address = req.body.Address;
         user.userPlatform = req.body.UserPlatform;
+        user.address.address = req.body.Address;
+        user.address.zipcode = req.body.Zipcode;
+        user.address.city = req.body.City;
+        user.address.state = req.body.State;
+        user.address.country = req.body.Country;
 
         user.save(function (err) {
           if (err) {
@@ -297,9 +309,9 @@ exports.checkEmail = function(req, res){
 
 exports.loginRequired = function(req, res, next){
   console.log("###### login required ######");
-  //res.json({status: 'login required'});
-  if (req.user) {
-    next();
+  console.log(req.headers)
+  if(req.user){
+    next()
   } else {
     return res.status(401).json({ message: 'Unauthorized user!' });
   }

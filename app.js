@@ -16,45 +16,37 @@ const fileUpload = require('express-fileupload');
 //routers
 var index = require('./routes/index');
 var user = require('./routes/user');
-
+var sms = require('./routes/sms');
+//Models
 var User = require('./models/user');
+var SMS = require('./models/sms');
+
 var jsonwebtoken = require('jsonwebtoken');
-
-
 var app = express();
 app.use(fileUpload());
-
 var cors = require('cors');
 app.use(cors());
-
 app.use(express.static('/public'));
 app.use('/public', express.static('/public'));
 
-
 var portSelected = 8281;
-
-
 var dbe = 'mongodb://localhost/nexzent-core';
 app.listen(portSelected, function() {
   console.log('Nexgen Nexzent-core API App listening on port ' + portSelected);
 });
-
-
 mongoose.connect(dbe);
 // var uri = "mongodb://pikanite:Pikanite@pikanite-shard-00-00-ctz3b.mongodb.net:27017,pikanite-shard-00-01-ctz3b.mongodb.net:27017,pikanite-shard-00-02-ctz3b.mongodb.net:27017/devpikanitedb?ssl=true&replicaSet=Pikanite-shard-0&authSource=admin";
 // mongoose.connect(uri);
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
-
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(morgan('Nexzent-core-log'));
+// app.use(morgan('Nexzent-core-log'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -64,7 +56,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //Token middleware
 app.use(function(req, res, next){
-  if(req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'JWT'){
+  if(req.headers && req.headers.authorization && req.headers.authorization.split(' ')[0] === 'nexzent_api'){
     jsonwebtoken.verify(req.headers.authorization.split(' ')[1], 'RESTFULAPIs', function(err, decode){
       if(err) req.user = undefined;
       req.user = decode;
@@ -79,7 +71,12 @@ app.use(function(req, res, next){
 
 /* Routes */
 app.use('/', index); //home page info : welcome page
+// app.use('/vendor', index);
+// app.use('/img', index);
+// app.use('/css', index);
+// app.use('/js', index);
 app.use('/user', user);
+app.use('/sms', sms);
 
 
 
