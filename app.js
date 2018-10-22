@@ -70,11 +70,7 @@ app.use(function(req, res, next){
 
 
 /* Routes */
-app.use('/', index); //home page info : welcome page
-// app.use('/vendor', index);
-// app.use('/img', index);
-// app.use('/css', index);
-// app.use('/js', index);
+app.use('/', index);
 app.use('/user', user);
 app.use('/sms', sms);
 
