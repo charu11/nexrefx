@@ -8,7 +8,7 @@ var SMSSchema = Schema({
     senderID: { type: ObjectId, required: true, unique: false },
     senderEmail: { type: String, required: true, unique: false },
     content: { type: String, required: true, unique: false },
-    recieverNumber: { type: String, required: true, unique: false },
+    recieverNumber: [{ type: String, required: true, unique: false }],
     type: { type: String, required: true, unique: false, enum:['individual', 'bulk', 'custom'] },
     userPlatform: { type: String, required: true, unique: false, enum:['iOS', 'android', 'web']},
     recordedTime:  { type: Date, required: true, unique: false, default: Date.now}
