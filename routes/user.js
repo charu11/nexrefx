@@ -41,7 +41,7 @@ router.post('/login', UserController.signIn);
 router.put('/update', UserController.loginRequired, UserController.updateProfile);
 router.put('/updatePassword', UserController.loginRequired, UserController.updatePassword);
 router.post('/checkEmail', UserController.checkEmail);
-router.post('socialLogin', UserController.SocialMediaLoginRegister);
+router.post('/socialLogin', UserController.SocialMediaLoginRegister);
 //router.post('/loginreq', UserController.loginRequired); //Auth-Token-Test
 
 // router.post('/forgotPassword');

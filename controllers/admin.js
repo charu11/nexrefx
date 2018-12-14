@@ -7,21 +7,18 @@ var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var cors = require('cors')
-var User = require('../models/user');
-var SMS = require('../models/sms');
-var UserController = require('../controllers/user');
+var Admin = require('../models/admin');
+var AdminController = require('../controllers/admin');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
 var cryptoHandler = ('../controllers/cryptoHandler');
 app.use(cors())
 router.use(cors())
 var http = require('http');
-var https = require("https");
 var url = require('url');
 var fs = require('fs');
 var path = require('path');
 var jsonwebtoken = require('jsonwebtoken');
-var request=require('request');
 //var User = mongoose.model('User');
 
 app.use(cors())
@@ -48,140 +45,52 @@ router.use(function (req, res, next) {
 });
 
 
-exports.sms = function(req, res){
+exports.admin = function(req, res){
   console.log("###### user ######");
   res.json({status: 'user auth success !'});
 };
 
 
-/* ### send sms individual### */
-exports.send_sms = function(req, res){
-  console.log("###### send SMS ######");
-  User.findOne({ 'email': req.body.SenderEmail })
-  .exec(function (err, users) {
+/* ### Signup / Register ### */
+exports.register = function(req, res){
+  console.log("###### user register ######");
+  Admin.findOne({ 'email': req.body.Email })
+  .exec(function (err, admins) {
     if (err) {
       console.log('####### error occured' + err);
       // logger.error(err)
       res.send('error');
     } else {
-      if (users !== null) {
-        console.log("####################### not an null data : user already exist ##########################");
-        var sms = new SMS();
-        var ObjectID = require('mongodb').ObjectID;
-        var objectId = new ObjectID();
-        sms.smsTrackingID = objectId
-        sms.senderID = users._id;
-        sms.senderEmail = req.body.SenderEmail;
-        sms.content = req.body.MessageContent;
-        sms.recieverNumber = req.body.RecieverNumber;
-        sms.userPlatform = req.body.UserPlatform;
-        sms.type = "individual";
+      if (admins !== null) {
+        console.log("####################### not an null data : admins already exist ##########################");
+          res.json({ message: 'failed', details: "email already registered!", status: "signup_failed" });
+      } else {
+        console.log("####################### null data ##########################");
+        console.log(users);
+        var admin = new Admin();
+        admin.firstName = req.body.FirstName;
+        admin.lastName = req.body.LastName;
+        admin.email = req.body.Email;
+        admin.birthday = req.body.Birthday;
+        admin.password = bcrypt.hashSync(req.body.Password, 10);
+        admin.contactNumber = req.body.ContactNumber;
+        admin.nicNumber = req.body.NICNumber;
+        admin.address = req.body.Address;
+        admin.enableAdmin = req.body.EnableAdmin;
+        admin.role = req.body.Role;
 
-        var smsURLString = "http://119.235.1.63:4050/Sms.svc/SendSms?phoneNumber="+req.body.RecieverNumber+"&smsMessage="+req.body.MessageContent+"&companyId=NEXGEN2&pword=NEXGEN123";
 
-        const options = {
-            //hostname: 'www.google.com',
-            //port: 4050,
-            //path: '/upload',
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-              //'Content-Length': Buffer.byteLength(postData)
-            }
-          };
-
-        request.get(smsURLString,options,function(err,response,body){
-          if(err){
+        admin.save(function (err) {
+          if (err) {
+            console.log('#################### error occured #######################');
+            console.log(err);
             res.send(err);
-          } ////TODO: handle err
-          console.log(JSON.parse(body));
-          if(JSON.parse(body).Status === '200' ){
-            sms.save(function (err) {
-              if (err) {
-                console.log('#################### error occured #######################');
-                console.log(err);
-                res.send(err);
-              } else {
-                res.json({ message: 'success', details: "sms sent successfully", content: sms });
-              }
-            });
           } else {
-            res.json({ message: 'failed', details: "sms sent failed"});
+            admin.password = undefined;
+            res.json({ message: 'success', details: "SignIn successfully", content: admin });
           }
         });
-      } else {
-        console.log("####################### null data : user not exist ##########################");
-        //console.log(users);
-        res.json({ message: 'failed', details: "email not registered!", status: "signup_failed" });
-
       }
-
-    }
-  });
-};
-
-/* ### ~ send bulk sms ~ ### */
-exports.send_bulk = function(req, res){
-  console.log("###### send SMS ######");
-  User.findOne({ 'email': req.body.SenderEmail })
-  .exec(function (err, users) {
-    if (err) {
-      console.log('####### error occured' + err);
-      // logger.error(err)
-      res.send('error');
-    } else {
-      if (users !== null) {
-        console.log("####################### not an null data : user already exist ##########################");
-        var sms = new SMS();
-        var ObjectID = require('mongodb').ObjectID;
-        var objectId = new ObjectID();
-        sms.smsTrackingID = objectId
-        sms.senderID = users._id;
-        sms.senderEmail = req.body.SenderEmail;
-        sms.content = req.body.MessageContent;
-        sms.recieverNumber = req.body.RecieverNumber;
-        sms.userPlatform = req.body.UserPlatform;
-        sms.type = "bulk";
-
-        var smsURLString = "http://119.235.1.63:4050/Sms.svc/SendSms?phoneNumber="+req.body.RecieverNumber+"&smsMessage="+req.body.MessageContent+"&companyId=DROPME&pword=DROPME321";
-
-        const options = {
-            //hostname: 'www.google.com',
-            //port: 4050,
-            //path: '/upload',
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-              //'Content-Length': Buffer.byteLength(postData)
-            }
-          };
-
-        request.get(smsURLString,options,function(err,response,body){
-          if(err){
-            res.send(err);
-          } ////TODO: handle err
-          console.log(JSON.parse(body));
-          if(JSON.parse(body).Status === '200' ){
-            sms.save(function (err) {
-              if (err) {
-                console.log('#################### error occured #######################');
-                console.log(err);
-                res.send(err);
-              } else {
-                res.json({ message: 'success', details: "sms sent successfully", content: sms });
-              }
-            });
-          } else {
-            res.json({ message: 'failed', details: "sms sent failed"});
-          }
-        });
-      } else {
-        console.log("####################### null data : user not exist ##########################");
-        //console.log(users);
-        res.json({ message: 'failed', details: "email not registered!", status: "signup_failed" });
-
-      }
-
     }
   });
 };

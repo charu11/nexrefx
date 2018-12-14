@@ -9,6 +9,7 @@ var AdminSchema = Schema({
     birthday: { type: String, required: true, unique: false },
     password: { type: String, required: true, unique: false },
     contactNumber: { type: String, required: true, unique: false },
+    nicNumber: { type: String, required: true, unique: false },
     address: { type: String, required: true, unique: false },
     enableAdmin: { type: Boolean, required: true, unique: false, default: true },
     role:{ type: String, required: true, unique: false, default: 'generic', enum: ['super', 'generic'] },
