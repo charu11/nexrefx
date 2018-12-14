@@ -69,7 +69,7 @@ session.on('connect', () => {
     }
     });
   })
-})
+});
 session.on('close', () => {
   console.log('smpp is now disconnected')
 
@@ -104,8 +104,8 @@ function sendSMS(from, to, text) {
 exports.otp = function(req, res){
   console.log("###### OTP ######");
   // do something with respons
-  sendSMS("94115936540","94711358399","TestOTP")
-  
+  sendSMS("94115936540","94711358399","TestOTP");
+
   // res.json({status: 'user auth success !', response : response});
 
 
