@@ -13,8 +13,8 @@ var UserController = require('../controllers/user');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
 var cryptoHandler = ('../controllers/cryptoHandler');
-app.use(cors())
-router.use(cors())
+app.use(cors());
+router.use(cors());
 var http = require('http');
 var https = require("https");
 var url = require('url');
@@ -27,8 +27,6 @@ const session = new smpp.Session({host: '119.235.5.234', port: 5019});
 
 //var User = mongoose.model('User');
 
-app.use(cors())
-router.use(cors())
 
 
 
@@ -51,60 +49,64 @@ router.use(function (req, res, next) {
 });
 
 
-// let isConnected = false
-// session.on('connect', () => {
-//   isConnected = true;
-//   console.log("session started")
-//   session.bind_transceiver({
-//       system_id: 'NEXGEN',
-//       password: 'Nexgen@1'
-//       // interface_version: 1,
-//       // system_type: '380666000600',
-//       // address_range: '+380666000600',
-//       // addr_ton: 1,
-//       // addr_npi: 1,
-//   }, (pdu) => {
-//     if (pdu.command_status == 0) {
-//         console.log('Successfully bound')
-//     }
-//     });
-//   })
-// });
-// session.on('close', () => {
-//   console.log('smpp is now disconnected')
-//
-//   if (isConnected) {
-//     session.connect();    //reconnect again
-//   }
-// });
-// session.on('error', error => {
-//   console.log('smpp error', error)
-//   isConnected = false;
-// });
+let isConnected = false;
+//MARK: init socket for otp
+session.on('connect', () => {
+  isConnected = true;
+  console.log("session started")
+  session.bind_transceiver({
+      system_id: 'NEXGEN',
+      password: 'Nexgen@1'
+      // interface_version: 1,
+      // system_type: '380666000600',
+      // address_range: '+380666000600',
+      // addr_ton: 1,
+      // addr_npi: 1,
+  }, (pdu) => {
+    if (pdu.command_status == 0) {
+        console.log('Successfully bound')
+    }
+    });
+  });
+
+//MARK: close socket for otp
+session.on('close', () => {
+  console.log('smpp is now disconnected')
+
+  if (isConnected) {
+    session.connect();    //reconnect again
+  }
+});
+
+//MARK: error handle socket for otp
+session.on('error', error => {
+  console.log('smpp error', error)
+  isConnected = false;
+});
 
 
-// function sendSMS(from, to, text){
-//    from += `+${from}`
-// // this is very important so make sure you have included + sign before ISD code to send sms
-//
-//   to += `+${to}`
-//
-//   session.submit_sm({
-//       source_addr:      from,
-//       destination_addr: to,
-//       short_message:    text
-//   }, function(pdu) {
-//       if (pdu.command_status == 0) {
-//           // Message successfully sent
-//           console.log(pdu.message_id);
-//       }
-//   });
-// };
+function sendSMS(from, to, text){
+   from += `+${from}`
+// this is very important so make sure you have included + sign before ISD code to send sms
+
+  to += `+${to}`
+
+  session.submit_sm({
+      source_addr:      from,
+      destination_addr: to,
+      short_message:    text
+  }, function(pdu) {
+      if (pdu.command_status == 0) {
+          // Message successfully sent
+          console.log(pdu.message_id);
+      }
+  });
+};
 
 exports.otp = function(req, res){
   console.log("###### OTP ######");
   // do something with respons
-  // sendSMS("94115936540","94711358399","TestOTP");
+  sendSMS("94115936540","94711358399","TestOTP");
 
   // res.json({status: 'user auth success !', response : response});
 

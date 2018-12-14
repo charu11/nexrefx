@@ -22,7 +22,7 @@
     "morgan": "^1.9.1",
     "node-mailer": "^0.1.1",
     "node-thumbnail": "^0.14.0",
-    "nodemon": "^1.18.4",
+    "nodemon": "^1.18.9",
     "serve-favicon": "^2.5.0",
     "smpp": "^0.3.1",
     "sms-gateway-nodejs": "^0.1.0",
