@@ -9,8 +9,8 @@ var cors = require('cors')
 var http = require('http');
 var url = require('url');
 var fs = require('fs');
-var User = require('../models/user');
-var smsController = require('../controllers/sms')
+var OTP = require('../models/otp');
+var otpController = require('../controllers/otp')
 app.use(cors())
 router.use(cors())
 
@@ -35,8 +35,8 @@ router.use(function (req, res, next) {
 });
 
 
-router.get('/', smsController.loginRequired, smsController.otp);
-router.post('/send_otp', smsController.loginRequired, smsController.send_otp);
+router.get('/', otpController.loginRequired, otpController.otp);
+router.post('/send_otp', otpController.loginRequired, otpController.send_otp);
 //router.post('/send_bulk', smsController.loginRequired, smsController.send_bulk);
 //router.post('/loginreq', UserController.loginRequired); //Auth-Token-Test
 

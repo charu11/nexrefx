@@ -35,7 +35,7 @@ router.use(function (req, res, next) {
 });
 
 
-// router.get('/', AdminController.loginRequired, AdminController.admin);
+router.get('/', AdminController.loginRequired, AdminController.admin);
 router.post('/signup', AdminController.register);
 // router.post('/login', AdminController.signIn);
 // router.put('/update', AdminController.loginRequired, AdminController.updateProfile);
