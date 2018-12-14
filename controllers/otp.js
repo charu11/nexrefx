@@ -79,16 +79,16 @@ exports.send_otp = function(req, res){
         var otp = new OTP();
         var ObjectID = require('mongodb').ObjectID;
         var objectId = new ObjectID();
-        sms.smsTrackingID = objectId
-        sms.senderID = users._id;
-        sms.senderEmail = req.body.SenderEmail;
-        sms.content = req.body.MessageContent;
-        sms.recieverNumber = req.body.RecieverNumber;
-        sms.userPlatform = req.body.UserPlatform;
-        sms.type = "individual";
+        otp.smsTrackingID = objectId
+        otp.senderID = users._id;
+        otp.senderEmail = req.body.SenderEmail;
+        otp.content = req.body.MessageContent;
+        otp.recieverNumber = req.body.RecieverNumber;
+        otp.userPlatform = req.body.UserPlatform;
+        otp.type = "individual";
 
 
-        var smsURLString = "http://119.235.5.234:5019/Sms.svc/SendSms?phoneNumber="+req.body.RecieverNumber+"&smsMessage="+req.body.MessageContent+"&companyId=NEXGEN2&pword=NEXGEN123";
+        var smsURLString = "http://119.235.5.234:5019/Sms.svc/SendSms?phoneNumber="+req.body.RecieverNumber+"&smsMessage="+req.body.MessageContent+"&companyId=NEXGEN&pword=Nexgen@1";
 
         const options = {
             //hostname: 'www.google.com',
