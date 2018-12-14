@@ -54,7 +54,7 @@ router.use(function (req, res, next) {
 let isConnected = false
 session.on('connect', () => {
   isConnected = true;
-
+  console.log("session started")
   session.bind_transceiver({
       system_id: 'NEXGEN',
       password: 'Nexgen@1'
@@ -83,28 +83,28 @@ session.on('error', error => {
 });
 
 
-function sendSMS(from, to, text) {
-   from += `+${from}`
-// this is very important so make sure you have included + sign before ISD code to send sms
-
-  to += `+${to}`
-
-  session.submit_sm({
-      source_addr:      from,
-      destination_addr: to,
-      short_message:    text
-  }, function(pdu) {
-      if (pdu.command_status == 0) {
-          // Message successfully sent
-          console.log(pdu.message_id);
-      }
-  });
-};
+// function sendSMS(from, to, text){
+//    from += `+${from}`
+// // this is very important so make sure you have included + sign before ISD code to send sms
+//
+//   to += `+${to}`
+//
+//   session.submit_sm({
+//       source_addr:      from,
+//       destination_addr: to,
+//       short_message:    text
+//   }, function(pdu) {
+//       if (pdu.command_status == 0) {
+//           // Message successfully sent
+//           console.log(pdu.message_id);
+//       }
+//   });
+// };
 
 exports.otp = function(req, res){
   console.log("###### OTP ######");
   // do something with respons
-  sendSMS("94115936540","94711358399","TestOTP");
+  // sendSMS("94115936540","94711358399","TestOTP");
 
   // res.json({status: 'user auth success !', response : response});
 
