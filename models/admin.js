@@ -16,4 +16,4 @@ var AdminSchema = Schema({
     recordedTime:  { type: Date, required: true, unique: false, default: Date.now}
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('Admin', AdminSchema);
