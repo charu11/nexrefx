@@ -35,13 +35,13 @@ router.use(function (req, res, next) {
 });
 
 
-router.get('/', AdminController.loginRequired, AdminController.admin);
+// router.get('/', AdminController.loginRequired, AdminController.admin);
 router.post('/signup', AdminController.register);
-router.post('/login', AdminController.signIn);
-router.put('/update', AdminController.loginRequired, AdminController.updateProfile);
-router.put('/updatePassword', AdminController.loginRequired, AdminController.updatePassword);
-router.post('/checkEmail', AdminController.checkEmail);
-router.post('/socialLogin', AdminController.SocialMediaLoginRegister);
+// router.post('/login', AdminController.signIn);
+// router.put('/update', AdminController.loginRequired, AdminController.updateProfile);
+// router.put('/updatePassword', AdminController.loginRequired, AdminController.updatePassword);
+// router.post('/checkEmail', AdminController.checkEmail);
+// router.post('/socialLogin', AdminController.SocialMediaLoginRegister);
 //router.post('/loginreq', UserController.loginRequired); //Auth-Token-Test
 
 // router.post('/forgotPassword');
