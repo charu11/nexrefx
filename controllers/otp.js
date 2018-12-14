@@ -84,6 +84,33 @@ session.on('error', error => {
   isConnected = false;
 });
 
+session.on('pdu', function (pdu) {
+
+    if (pdu.command == 'deliver_sm') {
+
+        const sms = {
+            from: null,
+            to: null,
+            message: null
+        }
+
+        sms.from = pdu.source_addr.toString();
+        sms.to = pdu.destination_addr.toString();
+
+        if (pdu.message_payload) {
+            sms.message = pdu.message_payload.message;
+        }
+
+        console.log(sms);
+
+        session.deliver_sm_resp({
+            sequence_number: pdu.sequence_number
+        });
+
+    }
+
+});
+
 
 function sendSMS(from, to, text){
    from += `+${from}`
@@ -136,6 +163,33 @@ exports.otp = function(req, res){
         }
     });
 
+
+    session.on('pdu', function (pdu) {
+
+    if (pdu.command == 'deliver_sm') {
+
+        const sms = {
+            from: null,
+            to: null,
+            message: null
+        }
+
+        sms.from = pdu.source_addr.toString();
+        sms.to = pdu.destination_addr.toString();
+
+        if (pdu.message_payload) {
+            sms.message = pdu.message_payload.message;
+        }
+
+        console.log(sms);
+
+        session.deliver_sm_resp({
+            sequence_number: pdu.sequence_number
+        });
+
+    }
+
+});
   //MARK: close socket for otp
   session.on('close', () => {
     console.log('smpp is now disconnected')

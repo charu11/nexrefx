@@ -116,7 +116,32 @@ session.on('error', error => {
   console.log('smpp error', error)
   isConnected = false;
 });
+session.on('pdu', function (pdu) {
 
+    if (pdu.command == 'deliver_sm') {
+
+        const sms = {
+            from: null,
+            to: null,
+            message: null
+        }
+
+        sms.from = pdu.source_addr.toString();
+        sms.to = pdu.destination_addr.toString();
+
+        if (pdu.message_payload) {
+            sms.message = pdu.message_payload.message;
+        }
+
+        console.log(sms);
+
+        session.deliver_sm_resp({
+            sequence_number: pdu.sequence_number
+        });
+
+    }
+
+});
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
