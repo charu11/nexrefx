@@ -385,8 +385,8 @@ exports.checkEmail = function(req, res){
 };
 
 exports.loginRequired = function(req, res, next){
-  console.log("###### login required ######");
-  console.log(req.headers)
+  //console.log("###### login required ######");
+  //console.log(req.headers)
   if(req.user){
     next()
   } else {

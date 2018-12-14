@@ -10,6 +10,8 @@ var https = require('https');
 var http = require('http');
 var fs = require('fs');
 var mongoose = require('mongoose');
+const smpp = require('smpp');
+const session = new smpp.Session({host: '119.235.5.234', port: 5019});
 
 const fileUpload = require('express-fileupload');
 
@@ -80,7 +82,40 @@ app.use('/admin', admin);
 app.use('/sms', sms);
 app.use('/otp', otp);
 
+let isConnected = false;
+//MARK: init socket for otp
+session.on('connect', () => {
+  isConnected = true;
+  console.log("session started")
+  session.bind_transceiver({
+      system_id: 'NEXGEN',
+      password: 'Nexgen@1'
+      // interface_version: 1,
+      // system_type: '380666000600',
+      // address_range: '+380666000600',
+      // addr_ton: 1,
+      // addr_npi: 1,
+  }, (pdu) => {
+    if (pdu.command_status == 0) {
+        console.log('Successfully bound')
+    }
+    });
+  });
 
+//MARK: close socket for otp
+session.on('close', () => {
+  console.log('smpp is now disconnected')
+
+  if (isConnected) {
+    session.connect();    //reconnect again
+  }
+});
+
+//MARK: error handle socket for otp
+session.on('error', error => {
+  console.log('smpp error', error)
+  isConnected = false;
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
