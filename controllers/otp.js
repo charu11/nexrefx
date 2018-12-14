@@ -99,7 +99,7 @@ function sendSMS(from, to, text) {
           console.log(pdu.message_id);
       }
   });
-}
+};
 
 exports.otp = function(req, res){
   console.log("###### OTP ######");
