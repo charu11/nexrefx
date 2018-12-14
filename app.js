@@ -18,10 +18,12 @@ var index = require('./routes/index');
 var user = require('./routes/user');
 var admin = require('./routes/admin');
 var sms = require('./routes/sms');
+var otp = require('./routes/otp');
 //Models
 var User = require('./models/user');
 var Admin = require('./models/admin');
 var SMS = require('./models/sms');
+var OTP = require('./models/otp');
 
 var jsonwebtoken = require('jsonwebtoken');
 var app = express();
@@ -76,6 +78,7 @@ app.use('/', index);
 app.use('/user', user);
 app.use('/admin', admin);
 app.use('/sms', sms);
+app.use('/otp', opt);
 
 
 
