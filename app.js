@@ -78,7 +78,7 @@ app.use('/', index);
 app.use('/user', user);
 app.use('/admin', admin);
 app.use('/sms', sms);
-app.use('/otp', opt);
+app.use('/otp', otp);
 
 
 
