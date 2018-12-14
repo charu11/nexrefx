@@ -76,7 +76,7 @@ session.on('close', () => {
   if (isConnected) {
     session.connect();    //reconnect again
   }
-})
+});
 session.on('error', error => {
   console.log('smpp error', error)
   isConnected = false;
