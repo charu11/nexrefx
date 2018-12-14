@@ -16,9 +16,11 @@ const fileUpload = require('express-fileupload');
 //routers
 var index = require('./routes/index');
 var user = require('./routes/user');
+var admin = require('./routes/admin');
 var sms = require('./routes/sms');
 //Models
 var User = require('./models/user');
+var Admin = require('./models/admin');
 var SMS = require('./models/sms');
 
 var jsonwebtoken = require('jsonwebtoken');
