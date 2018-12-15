@@ -133,18 +133,18 @@ function sendSMS(from, to, text){
 exports.otp = function(req, res){
   console.log("###### OTP ######");
   // do something with respons
-  // sendSMS("94115936540","94711358399","TestOTP");
+  sendSMS("94115936540","94711358399","TestOTP");
   session.on('connect', () => {
     isConnected = true;
     console.log("session started")
     session.bind_transceiver({
         system_id: 'NEXGEN',
-        password: 'Nexgen@1',
-        interface_version: 1,
-        system_type: '+94000000000',
-        address_range: '+94999999999',
-        addr_ton: 1,
-        addr_npi: 1,
+        password: 'Nexgen@1'
+        // interface_version: 1,
+        // system_type: '+94000000000',
+        // address_range: '+94999999999',
+        // addr_ton: 1,
+        // addr_npi: 1,
     }, (pdu) => {
       if (pdu.command_status == 0) {
           console.log('Successfully bound')
