@@ -113,10 +113,10 @@ session.on('pdu', function (pdu) {
 
 
 function sendSMS(from, to, text){
-   from += `+${from}`
+   // from += `+${from}`
 // this is very important so make sure you have included + sign before ISD code to send sms
 
-  to += `+${to}`
+  // to += `+${to}`
 
   session.submit_sm({
       source_addr:      from,
@@ -133,7 +133,7 @@ function sendSMS(from, to, text){
 exports.otp = function(req, res){
   console.log("###### OTP ######");
   // do something with respons
-  sendSMS("94115936540","94711358399","TestOTP");
+  sendSMS("0115936540","0711358399","Test OTP 1");
   session.on('connect', () => {
     isConnected = true;
     console.log("session started")
@@ -153,9 +153,9 @@ exports.otp = function(req, res){
     });
 
     session.submit_sm({
-        source_addr:      "+94115936540",
-        destination_addr: "+94711358399",
-        short_message:    "Test OTP"
+        source_addr:      "0115936540",
+        destination_addr: "0711358399",
+        short_message:    "Test OTP 2"
     }, function(pdu) {
         if (pdu.command_status == 0) {
             // Message successfully sent
