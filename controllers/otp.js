@@ -102,7 +102,7 @@ session.on('pdu', function (pdu) {
         }
 
         console.log(sms);
-
+        res.json({status: 'OTP sent successfully !', response : sms});
         session.deliver_sm_resp({
             sequence_number: pdu.sequence_number
         });
@@ -133,81 +133,8 @@ function sendSMS(from, to, text){
 exports.otp = function(req, res){
   console.log("###### OTP ######");
   // do something with respons
-  sendSMS("0115936540","0711358399","Test OTP 1");
-  session.on('connect', () => {
-    isConnected = true;
-    console.log("session started")
-    session.bind_transceiver({
-        system_id: 'NEXGEN',
-        password: 'Nexgen@1'
-        // interface_version: 1,
-        // system_type: '+94000000000',
-        // address_range: '+94999999999',
-        // addr_ton: 1,
-        // addr_npi: 1,
-    }, (pdu) => {
-      if (pdu.command_status == 0) {
-          console.log('Successfully bound')
-      }
-      });
-    });
-
-    session.submit_sm({
-        source_addr:      "0115936540",
-        destination_addr: "0711358399",
-        short_message:    "Test OTP 2"
-    }, function(pdu) {
-        if (pdu.command_status == 0) {
-            // Message successfully sent
-            console.log(pdu.message_id);
-        }
-    });
-
-
-    session.on('pdu', function (pdu) {
-
-    if (pdu.command == 'deliver_sm') {
-
-        const sms = {
-            from: null,
-            to: null,
-            message: null
-        }
-
-        sms.from = pdu.source_addr.toString();
-        sms.to = pdu.destination_addr.toString();
-
-        if (pdu.message_payload) {
-            sms.message = pdu.message_payload.message;
-        }
-
-        console.log(sms);
-
-        session.deliver_sm_resp({
-            sequence_number: pdu.sequence_number
-        });
-
-    }
-
-});
-  //MARK: close socket for otp
-  session.on('close', () => {
-    console.log('smpp is now disconnected')
-
-    if (isConnected) {
-      session.connect();    //reconnect again
-    }
-  });
-
-  //MARK: error handle socket for otp
-  session.on('error', error => {
-    console.log('smpp error', error)
-    isConnected = false;
-  });
-
+  sendSMS("0115936540","0711358399","Test OTP on GET");
   // res.json({status: 'user auth success !', response : response});
-
-
 };
 
 
@@ -232,45 +159,22 @@ exports.send_otp = function(req, res){
         otp.content = req.body.MessageContent;
         otp.recieverNumber = req.body.RecieverNumber;
         otp.userPlatform = req.body.UserPlatform;
-        otp.type = "individual";
-
-
-        var smsURLString = "http://119.235.5.234:5019/Sms.svc/SendSms?phoneNumber="+req.body.RecieverNumber+"&smsMessage="+req.body.MessageContent+"&companyId=NEXGEN&pword=Nexgen@1";
-
-        const options = {
-            //hostname: 'www.google.com',
-            //port: 4050,
-            //path: '/upload',
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-              //'Content-Length': Buffer.byteLength(postData)
-            }
-          };
-
-        request.get(smsURLString,options,function(err,response,body){
-          if(err){
+        otp.type = "otp";
+        sendSMS("0115936540",req.body.RecieverNumber,req.body.MessageContent);
+        otp.save(function (err) {
+          if (err) {
+            console.log('#################### error occured #######################');
+            console.log(err);
             res.send(err);
-          } ////TODO: handle err
-          console.log(JSON.parse(body));
-          if(JSON.parse(body).Status === '200' ){
-            sms.save(function (err) {
-              if (err) {
-                console.log('#################### error occured #######################');
-                console.log(err);
-                res.send(err);
-              } else {
-                res.json({ message: 'success', details: "sms sent successfully", content: sms });
-              }
-            });
           } else {
-            res.json({ message: 'failed', details: "sms sent failed"});
+            res.json({status: "success", message: 'OTP sent successfully !', details: "OTP sent successfully !", content: otp });
           }
         });
+
       } else {
         console.log("####################### null data : user not exist ##########################");
         //console.log(users);
-        res.json({ message: 'failed', details: "email not registered!", status: "signup_failed" });
+        res.json({ message: 'user not registered!', details: "user not registered!", status: "failed" });
 
       }
 
