@@ -6,6 +6,8 @@ var UserSchema = Schema({
     firstName: { type: String, required: true, unique: false },
     lastName: { type: String, required: true, unique: false },
     email: { type: String, required: true, unique: true },
+    smsMaskingRequestedName: { type: String, required: true, unique: true, default:'none' },
+    smsMaskedName: { type: String, required: true, unique: false, default:'none' },
     smsUserLogin: { type: String, required: true, unique: false, default:'none' },
     smsUserPassword: { type: String, required: true, unique: false, default:'none' },
     birthday: { type: String, required: true, unique: false, default:'none'},
@@ -19,7 +21,7 @@ var UserSchema = Schema({
       country: { type: String, required: true, unique: false }
     },
     enableUser: { type: Boolean, required: true, unique: false, default: true},
-    socialLoginId:{ type: String, required: false, unique: true },
+    socialLoginId:{ type: String, required: false, unique: false },
     userPlatform: { type: String, required: true, unique: false, enum:['iOS', 'android', 'web']},
     userType: { type: String, required: true, unique: false, default: 'standard', enum:['standard', 'facebook', 'google'] },
     userProfilePic:{ type: String, required: false, unique: false, default: 'none' },
