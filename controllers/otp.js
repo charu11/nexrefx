@@ -85,39 +85,30 @@ session.on('error', error => {
 });
 
 session.on('pdu', function (pdu) {
-
     if (pdu.command == 'deliver_sm') {
-
         const sms = {
             from: null,
             to: null,
             message: null
         }
-
         sms.from = pdu.source_addr.toString();
         sms.to = pdu.destination_addr.toString();
-
         if (pdu.message_payload) {
             sms.message = pdu.message_payload.message;
         }
-
         console.log(sms);
         res.json({status: 'OTP sent successfully !', response : sms});
         session.deliver_sm_resp({
             sequence_number: pdu.sequence_number
         });
-
     }
-
 });
 
 
 function sendSMS(from, to, text){
    // from += `+${from}`
 // this is very important so make sure you have included + sign before ISD code to send sms
-
   // to += `+${to}`
-
   session.submit_sm({
       source_addr:      from,
       destination_addr: to,
@@ -140,7 +131,7 @@ exports.otp = function(req, res){
 
 /* ### send sms individual### */
 exports.send_otp = function(req, res){
-  console.log("###### send SMS ######");
+  console.log("###### send OTP ######");
   User.findOne({ 'email': req.body.SenderEmail })
   .exec(function (err, users) {
     if (err) {
@@ -170,14 +161,11 @@ exports.send_otp = function(req, res){
             res.json({status: "success", message: 'OTP sent successfully !', details: "OTP sent successfully !", content: otp });
           }
         });
-
       } else {
         console.log("####################### null data : user not exist ##########################");
         //console.log(users);
         res.json({ message: 'user not registered!', details: "user not registered!", status: "failed" });
-
       }
-
     }
   });
 };
