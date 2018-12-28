@@ -143,7 +143,7 @@ exports.send_bulk = function(req, res){
         sms.userPlatform = req.body.UserPlatform;
         sms.type = "bulk";
 
-        var smsURLString = "http://119.235.1.63:4050/Sms.svc/SendSms?phoneNumber="+req.body.RecieverNumber+"&smsMessage="+req.body.MessageContent+"&companyId=DROPME&pword=DROPME321";
+        var smsURLString = "http://119.235.1.63:4050/Sms.svc/SendSms?phoneNumber="+req.body.RecieverNumber+"&smsMessage="+req.body.MessageContent+"&companyId=NEXGEN1&pword=NEXGEN123";
 
         const options = {
             //hostname: 'www.google.com',
