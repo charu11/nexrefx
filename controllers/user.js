@@ -81,6 +81,7 @@ exports.register = function(req, res){
         user.address.city = req.body.City;
         user.address.state = req.body.State;
         user.address.country = req.body.Country;
+        user.userType = req.body.UserType;
 
         user.save(function (err) {
           if (err) {
