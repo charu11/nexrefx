@@ -114,9 +114,11 @@ function sendSMS(from, to, text){
       if (pdu.command_status == 0) {
           // Message successfully sent
           console.log(pdu.message_id);
-          res.json({status: 'OTP success !', response : pdu});
+          console.log(pdu);
+          //res.json({status: 'OTP success !', response : pdu});
       } else {
-        res.json({status: 'OTP could not be sent !', response : pdu});
+        console.log(pdu);
+        //res.json({status: 'OTP could not be sent !', response : pdu});
       }
   });
 };
