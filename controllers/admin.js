@@ -68,7 +68,7 @@ exports.register = function(req, res){
           res.json({ message: 'failed', details: "email already registered!", status: "signup_failed" });
       } else {
         console.log("####################### null data ##########################");
-        console.log(users);
+        // console.log(users);
         var admin = new Admin();
         admin.firstName = req.body.FirstName;
         admin.lastName = req.body.LastName;
