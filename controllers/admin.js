@@ -55,7 +55,7 @@ exports.admin = function(req, res){
 
 /* ### Signup / Register ### */
 exports.register = function(req, res){
-  console.log("###### user register ######");
+  console.log("###### admin register ######");
   Admin.findOne({ 'email': req.body.Email })
   .exec(function (err, admins) {
     if (err) {
@@ -87,7 +87,7 @@ exports.register = function(req, res){
             res.send(err);
           } else {
             admin.password = undefined;
-            res.json({ message: 'success', details: "SignIn successfully", content: admin });
+            res.json({ message: 'success', details: "SignUp successfully", content: admin });
           }
         });
       }

@@ -106,9 +106,6 @@ session.on('pdu', function (pdu) {
 
 
 function sendSMS(from, to, text){
-   // from += `+${from}`
-// this is very important so make sure you have included + sign before ISD code to send sms
-  // to += `+${to}`
   session.submit_sm({
       source_addr:      from,
       destination_addr: to,
@@ -117,13 +114,15 @@ function sendSMS(from, to, text){
       if (pdu.command_status == 0) {
           // Message successfully sent
           console.log(pdu.message_id);
+          res.json({status: 'OTP success !', response : pdu});
+      } else {
+        res.json({status: 'OTP could not be sent !', response : pdu});
       }
   });
 };
 
 exports.otp = function(req, res){
   console.log("###### OTP ######");
-  // do something with respons
   sendSMS("0115936540","0711358399","Test OTP on GET");
   // res.json({status: 'user auth success !', response : response});
 };
