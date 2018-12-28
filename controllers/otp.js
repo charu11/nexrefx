@@ -78,6 +78,14 @@ session.on('close', () => {
   }
 });
 
+session.on('close', () => {
+  console.log('smpp is now disconnected')
+
+  if (isConnected) {
+    session.connect();    //reconnect again
+  }
+});
+
 //MARK: error handle socket for otp
 session.on('error', error => {
   console.log('smpp error', error)
@@ -97,7 +105,7 @@ session.on('pdu', function (pdu) {
             sms.message = pdu.message_payload.message;
         }
         console.log(sms);
-        res.json({status: 'OTP sent successfully !', response : sms});
+        //res.json({status: 'OTP sent successfully !', response : sms});
         session.deliver_sm_resp({
             sequence_number: pdu.sequence_number
         });
@@ -126,7 +134,7 @@ function sendSMS(from, to, text){
 exports.otp = function(req, res){
   console.log("###### OTP ######");
   sendSMS("0115936540","0711358399","Test OTP on GET");
-  // res.json({status: 'user auth success !', response : response});
+  res.json({status: 'OTP test on 0711358399!', response : response});
 };
 
 
@@ -152,7 +160,13 @@ exports.send_otp = function(req, res){
         otp.recieverNumber = req.body.RecieverNumber;
         otp.userPlatform = req.body.UserPlatform;
         otp.type = "otp";
-        sendSMS("0115936540",req.body.RecieverNumber,req.body.MessageContent);
+        if (!isConnected) {
+          session.connect();    //reconnect again
+          sendSMS("0115936540",req.body.RecieverNumber,req.body.MessageContent);
+        } else {
+          sendSMS("0115936540",req.body.RecieverNumber,req.body.MessageContent);
+        }
+
         otp.save(function (err) {
           if (err) {
             console.log('#################### error occured #######################');
