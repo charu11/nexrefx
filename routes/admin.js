@@ -37,6 +37,7 @@ router.use(function (req, res, next) {
 
 router.get('/', AdminController.loginRequired, AdminController.admin);
 router.post('/signup', AdminController.register);
+router.post('/login', AdminController.signIn);
 // router.post('/login', AdminController.signIn);
 // router.put('/update', AdminController.loginRequired, AdminController.updateProfile);
 // router.put('/updatePassword', AdminController.loginRequired, AdminController.updatePassword);

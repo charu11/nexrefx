@@ -198,6 +198,7 @@ exports.signIn = function(req, res){
   });
 };
 
+
 /* ### Update user Profile  ### */
 exports.updateProfile = function(req, res){
   console.log('###### updating user profile ######');

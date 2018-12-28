@@ -9,6 +9,8 @@ var mongoose = require('mongoose');
 var cors = require('cors')
 var Admin = require('../models/admin');
 var AdminController = require('../controllers/admin');
+var User = require('../models/user');
+var UserController = require('../controllers/user');
 var jwt = require('jsonwebtoken');
 var bcrypt = require('bcrypt');
 var cryptoHandler = ('../controllers/cryptoHandler');
@@ -78,8 +80,6 @@ exports.register = function(req, res){
         admin.address = req.body.Address;
         admin.enableAdmin = req.body.EnableAdmin;
         admin.role = req.body.Role;
-
-
         admin.save(function (err) {
           if (err) {
             console.log('#################### error occured #######################');
@@ -100,7 +100,7 @@ exports.register = function(req, res){
 exports.signIn = function(req, res){
   console.log("###### user signIn #######");
   //res.json({status: 'sign In'});
-  User.findOne({ 'email': req.body.Email})
+  Admin.findOne({ 'email': req.body.Email})
   .exec(function (err, user) {
     if (err) {
       console.log('####### error occured' + err);
@@ -123,8 +123,8 @@ exports.signIn = function(req, res){
   });
 };
 
-/* ### Update user Profile  ### */
-exports.updateProfile = function(req, res){
+//MARK: update user SMS registration Data
+exports.updateAUserSMSRegistration = function(req, res){
   console.log('###### updating user profile ######');
   User.findById(req.body.UserId)
     .exec(function (err, user) {
@@ -167,11 +167,55 @@ exports.updateProfile = function(req, res){
     });
 };
 
+/* ### Update user Profile  ### */
+exports.updateProfile = function(req, res){
+  console.log('###### updating user profile ######');
+  Admin.findById(req.body.UserId)
+    .exec(function (err, user) {
+      if (err) {
+        console.log('error occured');
+        console.log(err)
+        res.json({ message: 'failed', details: "User does not exists", status: "user_not_exited" });
+      }
+      else {
+        if (user !== null) {
+          var newValues = {
+            $set: {
+              birthDay: req.body.BirthDay,
+              firstName: req.body.FirstName,
+              lastName: req.body.LastName,
+              contactNumber: req.body.ContactNumber,
+              address: req.body.Address
+            }
+          }
+          Admin.findByIdAndUpdate(req.body.UserId, newValues, function (err, result) {
+            if (err) {
+              console.log(err)
+              throw err;
+            } else {
+              Admin.findById(req.body.UserId)
+                .exec(function (err, user) {
+                  if (err) {
+                    console.log('error occured');
+                    console.log(err)
+                  } else {
+                    res.json({ message: 'success', details: "user profile updated successfully", content: user });
+                  }
+                });
+              }
+            });
+          } else {
+            res.json({ message: 'failed', details: "User does not exists", status: "user_not_exited" });
+          }
+      }
+    });
+};
+
 
 /* ### Change user password ### */
 exports.updatePassword = function(req, res){
   console.log('###### updating password ######');
-  User.findById(req.body.UserId)
+  Admin.findById(req.body.UserId)
     .exec(function (err, user) {
       if (err) {
         console.log('error occured');
@@ -186,12 +230,12 @@ exports.updatePassword = function(req, res){
                 password: bcrypt.hashSync(req.body.NewPassword, 10)
               }
             }
-            User.findByIdAndUpdate(req.body.UserId, newValues, function (err, result) {
+            Admin.findByIdAndUpdate(req.body.UserId, newValues, function (err, result) {
               if (err) {
                 console.log(err)
                 throw err;
               } else {
-                User.findById(req.body.UserId)
+                Admin.findById(req.body.UserId)
                   .exec(function (err, user) {
                     if (err) {
                       console.log('error occured');
@@ -215,7 +259,7 @@ exports.updatePassword = function(req, res){
 
 exports.checkEmail = function(req, res){
   console.log('###### checkingEmail ######');
-  User.findOne({ 'email': req.body.Email})
+  Admin.findOne({ 'email': req.body.Email})
   .exec(function (err, user) {
     if (err) {
       console.log('####### error occured' + err);

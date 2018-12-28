@@ -11,7 +11,7 @@ var AdminSchema = Schema({
     contactNumber: { type: String, required: true, unique: false },
     nicNumber: { type: String, required: true, unique: false },
     address: { type: String, required: true, unique: false },
-    enableAdmin: { type: Boolean, required: true, unique: false, default: true },
+    enableAdmin: { type: Boolean, required: true, unique: false, default: false },
     role:{ type: String, required: true, unique: false, default: 'generic', enum: ['super', 'generic'] },
     recordedTime:  { type: Date, required: true, unique: false, default: Date.now}
 });
