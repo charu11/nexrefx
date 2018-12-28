@@ -49,7 +49,7 @@ router.use(function (req, res, next) {
 });
 
 
-let isConnected = false;
+var isConnected = false;
 //MARK: init socket for otp
 session.on('connect', () => {
   isConnected = true;
