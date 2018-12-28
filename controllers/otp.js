@@ -90,6 +90,9 @@ session.on('close', () => {
 session.on('error', error => {
   console.log('smpp error', error)
   isConnected = false;
+  if (!isConnected) {
+    session.connect();    //reconnect again
+  }
 });
 
 session.on('pdu', function (pdu) {
@@ -167,15 +170,21 @@ exports.send_otp = function(req, res){
           sendSMS("0115936540",req.body.RecieverNumber,req.body.MessageContent);
         }
 
-        otp.save(function (err) {
-          if (err) {
-            console.log('#################### error occured #######################');
-            console.log(err);
-            res.send(err);
-          } else {
-            res.json({status: "success", message: 'OTP sent successfully !', details: "OTP sent successfully !", content: otp });
-          }
-        });
+        if (isConnected) {
+          otp.save(function (err) {
+            if (err) {
+              console.log('#################### error occured #######################');
+              console.log(err);
+              res.send(err);
+            } else {
+              res.json({status: "success", message: 'OTP sent successfully !', details: "OTP sent successfully !", content: otp });
+            }
+          });
+        } else {
+          res.json({status: "failed", message: 'OTP sent failed !', details: "OTP sent failed !", content: otp });
+        }
+
+
       } else {
         console.log("####################### null data : user not exist ##########################");
         //console.log(users);
