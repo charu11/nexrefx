@@ -5,6 +5,7 @@ var router = express.Router();
 var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 var cors = require('cors')
 var http = require('http');
 var url = require('url');

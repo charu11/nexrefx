@@ -10,6 +10,7 @@ var https = require('https');
 var http = require('http');
 var fs = require('fs');
 var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 const smpp = require('smpp');
 // const session = new smpp.Session({host: '119.235.5.234', port: 5019});
 
