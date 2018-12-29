@@ -84,6 +84,9 @@ exports.register = function(req, res){
         user.userType = req.body.UserType;
         user.businessRegistrationName = req.body.BusinessRegistrationName;
         user.businessRegistrationNumber = req.body.BusinessRegistrationNumber;
+        user.isEnabled = req.body.EnableUser;
+        user.isApproved = req.body.ApproveUser;
+        user.isVerified = req.body.VerifydUser;
 
         user.save(function (err) {
           if (err) {
