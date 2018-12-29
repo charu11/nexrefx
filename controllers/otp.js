@@ -145,25 +145,25 @@ exports.otp = function(req, res){
 exports.send_otp = function(req, res){
   console.log("###### send OTP ######");
   User.findOne({ 'email': req.body.SenderEmail })
-  .exec(function (err, users) {
+  .exec(function (err, user) {
     if (err) {
       console.log('####### error occured' + err);
       // logger.error(err)
       res.send('error');
     } else {
-      if (users !== null) {
+      if (user !== null) {
         console.log("####################### not an null data : user already exist ##########################");
         var otp = new OTP();
         var ObjectID = require('mongodb').ObjectID;
         var objectId = new ObjectID();
         otp.smsTrackingID = objectId
-        otp.senderID = users._id;
+        otp.senderID = user._id;
         otp.senderEmail = req.body.SenderEmail;
         otp.content = req.body.MessageContent;
         otp.recieverNumber = req.body.RecieverNumber;
         otp.userPlatform = req.body.UserPlatform;
         otp.type = "otp";
-        if(bcrypt.compareSync(req.body.Password, users.password)){
+        if(bcrypt.compareSync(req.body.Password, user.password) && (user.isEnabled === true) && (user.isVerified === true) && (user.isApproved === true)){
           console.log("====> OTP authorization passed")
           if (!isConnected) {
             session.connect();    //reconnect again
@@ -186,7 +186,7 @@ exports.send_otp = function(req, res){
             res.json({status: "failed", message: 'OTP sent failed !', details: "OTP sent failed !", content: otp });
           }
         } else {
-          res.json({ message: 'Authorization failed!', details: "invalid password!", status: "failed" })
+          res.json({ message: 'Authorization failed!', details: "invalid password or disabled by admin!", status: "failed" })
         }
 
 
