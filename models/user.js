@@ -20,6 +20,8 @@ var UserSchema = Schema({
       state: { type: String, required: false, unique: false },
       country: { type: String, required: true, unique: false }
     },
+    businessRegistrationName: { type: String, required: true, unique: false, default: 'none' },
+    businessRegistrationNumber: { type: String, required: true, unique: true},
     enableUser: { type: Boolean, required: true, unique: false, default: true},
     socialLoginId:{ type: String, required: false, unique: false },
     userPlatform: { type: String, required: true, unique: false, enum:['iOS', 'android', 'web']},
