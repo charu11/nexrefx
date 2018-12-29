@@ -6,7 +6,7 @@ var UserSchema = Schema({
     firstName: { type: String, required: true, unique: false },
     lastName: { type: String, required: true, unique: false },
     email: { type: String, required: true, unique: true },
-    smsMaskingRequestedName: { type: String, required: true, unique: true, default:'none' },
+    smsMaskingRequestedName: { type: String, required: true, unique: false, default:'none' },
     smsMaskedName: { type: String, required: true, unique: false, default:'none' },
     smsUserLogin: { type: String, required: true, unique: false, default:'none' },
     smsUserPassword: { type: String, required: true, unique: false, default:'none' },
