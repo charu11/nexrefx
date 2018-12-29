@@ -36,7 +36,8 @@ router.use(function (req, res, next) {
 
 
 router.get('/', otpController.loginRequired, otpController.otp);
-router.post('/send_otp', otpController.loginRequired, otpController.send_otp);
+router.post('/send_otp', otpController.send_otp);
+router.post('/send_otp_system', otpController.loginRequired, otpController.send_otp);
 //router.post('/send_bulk', smsController.loginRequired, smsController.send_bulk);
 //router.post('/loginreq', UserController.loginRequired); //Auth-Token-Test
 

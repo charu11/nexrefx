@@ -163,26 +163,32 @@ exports.send_otp = function(req, res){
         otp.recieverNumber = req.body.RecieverNumber;
         otp.userPlatform = req.body.UserPlatform;
         otp.type = "otp";
-        if (!isConnected) {
-          session.connect();    //reconnect again
-          sendSMS("0115936540",req.body.RecieverNumber,req.body.MessageContent);
+        if(bcrypt.compareSync(req.body.Password, users.password)){
+          console.log("====> OTP authorization passed")
+          if (!isConnected) {
+            session.connect();    //reconnect again
+            sendSMS("0115936540",req.body.RecieverNumber,req.body.MessageContent);
+          } else {
+            sendSMS("0115936540",req.body.RecieverNumber,req.body.MessageContent);
+          }
+
+          if (isConnected) {
+            otp.save(function (err) {
+              if (err) {
+                console.log('#################### error occured #######################');
+                console.log(err);
+                res.send(err);
+              } else {
+                res.json({status: "success", message: 'OTP sent successfully !', details: "OTP sent successfully !", content: otp });
+              }
+            });
+          } else {
+            res.json({status: "failed", message: 'OTP sent failed !', details: "OTP sent failed !", content: otp });
+          }
         } else {
-          sendSMS("0115936540",req.body.RecieverNumber,req.body.MessageContent);
+          res.json({ message: 'Authorization failed!', details: "invalid password!", status: "failed" })
         }
 
-        if (isConnected) {
-          otp.save(function (err) {
-            if (err) {
-              console.log('#################### error occured #######################');
-              console.log(err);
-              res.send(err);
-            } else {
-              res.json({status: "success", message: 'OTP sent successfully !', details: "OTP sent successfully !", content: otp });
-            }
-          });
-        } else {
-          res.json({status: "failed", message: 'OTP sent failed !', details: "OTP sent failed !", content: otp });
-        }
 
 
       } else {
