@@ -82,6 +82,8 @@ exports.register = function(req, res){
         user.address.state = req.body.State;
         user.address.country = req.body.Country;
         user.userType = req.body.UserType;
+        user.businessRegistrationName = req.body.BusinessRegistrationName;
+        user.businessRegistrationNumber = req.body.BusinessRegistrationNumber;
 
         user.save(function (err) {
           if (err) {
