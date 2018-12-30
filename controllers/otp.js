@@ -168,9 +168,9 @@ exports.send_otp = function(req, res){
           console.log("====> OTP authorization passed")
           if (!isConnected) {
             session.connect();    //reconnect again
-            sendSMS("0115936540",req.body.RecieverNumber,req.body.MessageContent);
+            sendSMS("0115936540",req.body.ReceiverNumber,req.body.MessageContent);
           } else {
-            sendSMS("0115936540",req.body.RecieverNumber,req.body.MessageContent);
+            sendSMS("0115936540",req.body.ReceiverNumber,req.body.MessageContent);
           }
 
           if (isConnected) {
