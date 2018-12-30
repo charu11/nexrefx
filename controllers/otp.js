@@ -161,7 +161,7 @@ exports.send_otp = function(req, res){
         otp.senderID = user._id;
         otp.senderEmail = req.body.SenderEmail;
         otp.content = req.body.MessageContent;
-        otp.recieverNumber = req.body.RecieverNumber;
+        otp.receiverNumber = req.body.ReceiverNumber;
         otp.userPlatform = req.body.UserPlatform;
         otp.type = "otp";
         if(bcrypt.compareSync(req.body.Password, user.password) && (user.isEnabled === true) && (user.isVerified === true) && (user.isApproved === true)){
