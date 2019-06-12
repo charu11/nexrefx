@@ -1,36 +1,30 @@
 var mongoose = require('mongoose');
 mongoose.Promise = global.Promise;
-var bcrypt = require('bcrypt');
+//var bcrypt = require('bcrypt');
 var Schema = mongoose.Schema;
 
 var UserSchema = Schema({
-    firstName: { type: String, required: true, unique: false },
-    lastName: { type: String, required: true, unique: false },
-    email: { type: String, required: true, unique: true },
-    smsMaskingRequestedName: { type: String, required: true, unique: false, default:'none' },
-    smsMaskedName: { type: String, required: true, unique: false, default:'none' },
-    smsUserLogin: { type: String, required: true, unique: false, default:'none' },
-    smsUserPassword: { type: String, required: true, unique: false, default:'none' },
-    birthday: { type: String, required: true, unique: false, default:'none'},
-    password: { type: String, required: true, unique: false },
-    contactNumber: { type: String, required: true, unique: false, default: 'none' },
-    address: {
-      address: { type: String, required: true, unique: false },
-      zipcode: { type: String, required: true, unique: false },
-      city: { type: String, required: true, unique: false },
-      state: { type: String, required: false, unique: false },
-      country: { type: String, required: true, unique: false }
+    //userId       : {type: String, required: true, unique: false },
+    firstName    : { type: String, required: true, unique: false },
+    lastName     : { type: String, required: true, unique: false },
+    email        : { type: String, required: true, unique: false },
+    password     : { type: String, required: true, unique: false },
+    birthday     : {type: Date, required: true, unique: false },
+    contactNumber: {type: Number, required: true, unique: false },
+    address      : {
+      address : { type: String, required: true, unique: false },
+      zipcode : { type: String, required: true, unique: false },
+      city    : { type: String, required: true, unique: false },
+      state   : { type: String, required: false, unique: false },
+      country : { type: String, required: true, unique: false }
     },
-    businessRegistrationName: { type: String, required: true, unique: false, default: 'none' },
-    businessRegistrationNumber: { type: String, required: true, unique: true},
-    isEnabled: { type: Boolean, required: true, unique: false, default: false},
-    isApproved:{ type: Boolean, required: true, unique: false, default: false },
-    isVerified:{ type: Boolean, required: true, unique: false, default: true },
-    socialLoginId:{ type: String, required: false, unique: false },
-    userPlatform: { type: String, required: true, unique: false, enum:['iOS', 'android', 'web']},
-    userType: { type: String, required: true, unique: false, default: 'standard', enum:['standard', 'facebook', 'google'] },
-    userProfilePic:{ type: String, required: false, unique: false, default: 'none' },
-    recordedTime:  { type: Date, required: true, unique: false, default: Date.now}
+    //profileImage : {type: String, required: true, unique: false}
+    //numberOfProductOrders: { type: Number, required: true, unique: false, default: 0 },
+    //numberOfFreeItems: { type: Number, required: true, unique: false, default: 0 },
+    //numberOfPromos: { type: Number, required: true, unique: false, default: 0 },
+    //recordedTime:  { type: Date, required: true, unique: false, default: Date.now}
+    
 });
 
 module.exports = mongoose.model('User', UserSchema);
+
